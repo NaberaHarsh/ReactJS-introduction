@@ -5,7 +5,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 
-ReactDOM.render(<App name={[]}/>, document.getElementById('root'));
+ReactDOM.render(<App name={[]} obj={[{name:"Drink water",status:false},{name:"Clean your bed",status:false}]}/>, document.getElementById('root'));
 
 
 // If you want your app to work offline and load faster, you can change

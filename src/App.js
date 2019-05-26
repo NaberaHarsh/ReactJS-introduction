@@ -70,15 +70,16 @@ class App extends React.Component {
       item: '',
       list: this.props.obj
     };
+    this.state.number=0;
+    this.state.list=[];
+    this.state={};
     this.setValue = this.setValue.bind(this);
     this.getValue = this.getValue.bind(this);
     this.setStatus = this.setStatus.bind(this);
     this.SwapUp= this.SwapUp.bind(this);
     this.SwapDown= this.SwapDown.bind(this);
     this.Delete= this.Delete.bind(this);
-    this.state.number=0;
-    this.state.item=[];
-    this.state={};
+   
   
   }
   getList(props) {
@@ -111,22 +112,15 @@ setStatus(item) {
     )
 
     let count=this.state.number;   //completed item
-    if(this.state.item[i].status){
+    if(l[i].status){
       count++;
-      this.setState(
-        {number:count, list:l}
-      )
     }
     else{
       count--;
-      this.setState(
-        {number:count, list:l }
-      )
     }
-    // this.state.num=count;
-    // this.setState(
-    //   {num:count}
-    // )
+    this.setState(
+      {number:count, list:l }
+    )
   }
   SwapUp(item) {
     let x= this.state.list;
@@ -192,8 +186,8 @@ class ListItem extends React.Component {
     console.log('ListItem',this.props)
     return <div>
       <li onClick={() => { this.props.setStatus(this.props.item) }} className={this.props.item.status ? "paper paper-btn btn-block btn-success" : "paper paper-btn btn-block"} >{this.props.item.name}</li>
-      <button classname="paper paper-btn btn-success" onClick={() => { this.props.SwapUp(this.props.item) }}>Up</button>
-      <button classname="paper paper-btn btn-warning" onClick={() => { this.props.SwapDown(this.props.item) }}>down</button>
+      <button classname="paper paper-btn btn-warning" onClick={() => { this.props.SwapUp(this.props.item) }}>Up</button>
+      <button classname="paper paper-btn btn-info" onClick={() => { this.props.SwapDown(this.props.item) }}>down</button>
       <button classname="paper paper-btn btn-danger" onClick={() => { this.props.Delete(this.props.item)}}>X</button>
     </div>
   }
