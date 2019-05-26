@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.css';
+import './paper.css'
 
 
 
@@ -60,62 +61,141 @@ export default App;
 //     </div>
 //   )
 //   }
-  // export default Parent;
- 
-class App extends React.Component{
-  constructor(props){
+// export default Parent;
+
+class App extends React.Component {
+  constructor(props) {
     super(props);
+    this.state = {
+      item: '',
+      list: this.props.obj
+    };
+    this.setValue = this.setValue.bind(this);
+    this.getValue = this.getValue.bind(this);
+    this.setStatus = this.setStatus.bind(this);
+    this.SwapUp= this.SwapUp.bind(this);
+    this.SwapDown= this.SwapDown.bind(this);
+    this.Delete= this.Delete.bind(this);
+    this.state.number=0;
+    this.state.item=[];
     this.state={};
-    this.state.list=this.props.list;
+  
   }
-  getList=()=>
-{
-  let items=[];
-  for(let item of this.props.list)                                    
-   items.push(<li>{item}</li>);
-   //this.props.list.map((item)=><li>{item}</li>);
- return  items;
-}
-
-getValue=(e)=>
-{
-  console.log(e.target.value);
-  this.newItem= e.target.value;
-}
-setValue=(e)=>
-{
-    let l= this.state.list;
-    l.push(this.newItem);
-
-    this.setState(
-      {list:l}
-      // document.getElementById("")
-  )
-}
-
-render()
-{
-  return <div className="text-center todo" >
-    <h1 className="alert alert-danger">To-Do List </h1>
-
-    <button onClick={this.setValue}  >CLICK</button>
-    <br></br>
-    <br></br>
-    <input type="text"  onChange={this.getValue}></input>
-    <br></br>
-    <br></br>
-    <p>Total Items: {this.props.list.length}</p>
+  getList(props) {
+    console.log('obj', this.props.obj)
+    let items = [];
+    // return this.state.list.map((item,index)=><li onClick={()=> this.setStatus(item)} className={item.status? "paper-btn btn-block btn-success ":"paper-btn btn-block"} >{item.name}</li>); //to change status
+    return items = this.state.list.map((item, index) => <ListItem item={item} list={this.state.list}  SwapUp={this.SwapUp} SwapDown={this.SwapDown} Delete={this.Delete} setStatus={this.setStatus}></ListItem>)
+  }
+  getValue = (e) => {
+    console.log(e.target.value);
+    // newItem= e.target.value;
+    this.setState({ newItem: e.target.value });
+  }
+  setValue = (e) => {
+    if (this.state.newItem !== "" && this.state.newItem.trim()) {
+      let l = this.state.list;
+      let object = { name: this.state.newItem, status: false }
+      l.push(object);
+      this.setState({ list: l, newItem: '' })
     
-    <div className="container ">
-    <ul className="List Groups demo" > 
-    { this.getList() }
-    </ul>
-    </div>
+      document.getElementById("textarea").value = ''
+    }
+  }
+setStatus(item) {
+    let l = this.state.list;
+    let i = l.indexOf(item);
+    l[i].status = !l[i].status;
+    this.setState(
+      { list: l }
+    )
 
-  </div>
- // [remaining parts- blank in input block, changing item list to button, hover on every button including click,
-// sm-12]
- 
+    let count=this.state.number;   //completed item
+    if(this.state.item[i].status){
+      count++;
+      this.setState(
+        {number:count, list:l}
+      )
+    }
+    else{
+      count--;
+      this.setState(
+        {number:count, list:l }
+      )
+    }
+    // this.state.num=count;
+    // this.setState(
+    //   {num:count}
+    // )
+  }
+  SwapUp(item) {
+    let x= this.state.list;
+  let i= x.indexOf(item);    
+  { if(i!=0){
+      [x[i],x[i-1]]=[x[i-1],x[i]]
+    }
+  }
+    this.setState(
+      {list:x}
+    )
+  }
+  SwapDown(item) {
+    let x= this.state.list;
+  let i= x.indexOf(item);    
+   if(i!=this.props.obj.length-1){
+      [x[i+1],x[i]]=[x[i],x[i+1]]
+    }
+    else alert("this is already at the bottom");
+  
+    this.setState(
+      {list:x}
+    )
+  }
+  Delete(item){
+    alert("Are you sure you want to delete this task?")
+    let x= this.state.list;
+    let i= x.indexOf(item);  
+      x.splice(i,1);
+    this.setState(
+      {list:x}
+    )
+  }
+  render() {
+    return <div className="text-center todo" >
+      <h1 className="alert alert-dark">ToDo List</h1>
+
+      <button onClick={this.setValue}>Add Task</button>
+      <br></br>
+      <br></br>
+
+      <input type="text" id="textarea" onChange={this.getValue} ></input>
+      <br></br>
+      <br></br>
+      <p className="row flex-center" style={{marginTop:20}}> Completed Tasks: ({this.state.number}/{this.state.list.length})</p>
+
+      <div>
+        <ul className="demo">
+          {this.getList()}
+        </ul>
+      </div>
+    </div>
+  }
 }
+class ListItem extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state={
+      list: this.props.list
+     }
+  }
+  render() {
+    console.log('ListItem',this.props)
+    return <div>
+      <li onClick={() => { this.props.setStatus(this.props.item) }} className={this.props.item.status ? "paper paper-btn btn-block btn-success" : "paper paper-btn btn-block"} >{this.props.item.name}</li>
+      <button classname="paper paper-btn btn-success" onClick={() => { this.props.SwapUp(this.props.item) }}>Up</button>
+      <button classname="paper paper-btn btn-warning" onClick={() => { this.props.SwapDown(this.props.item) }}>down</button>
+      <button classname="paper paper-btn btn-danger" onClick={() => { this.props.Delete(this.props.item)}}>X</button>
+    </div>
+  }
 }
 export default App;

@@ -5,7 +5,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 
-ReactDOM.render(<App name="ToDo List" list={["item 1","item 2"]}/>, document.getElementById('root'));
+ReactDOM.render(<App name={[]}/>, document.getElementById('root'));
 
 
 // If you want your app to work offline and load faster, you can change

@@ -4,14 +4,13 @@ color: white;
 } */
 
 .todo{ 
-    font-family: cursive;
-    box-sizing: inherit;
+  font-family: cursive;
+  box-sizing: inherit;
+ 
   }
-ul.demo{
-    background: white;
+.demo
+{
     list-style-type: none;
-  }
-.demo:hover{
-    background-color: yellowgreen;
-    cursor: pointer;
 }
+
+
